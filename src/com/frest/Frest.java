@@ -14,15 +14,15 @@ import java.util.Locale;
 
 public class Frest {
 	static int parallel ; 
-	static String orclendpoint;
-	static String orcluser;
-	static String orclpass;
-	static String orclinst;
+	public static String orclendpoint;
+	public static String orcluser;
+	public static String orclpass;
+	public static String orclinst;
 	
-	static String pgendpoint;
-	static String pguser;
-	static String pgpass;
-	static String pgdb;
+	public static String pgendpoint;
+	public static String pguser;
+	public static String pgpass;
+	public static String pgdb;
 public static void main (String[] args)
 {
 	try{
@@ -60,7 +60,7 @@ public static void main (String[] args)
 	 qr.executeprintQuery(pgconn , " Select * FROM version()", "Connected to");
 	 qr.getDDL(orclconn, "TABLE");
 	 qr.applyDDL(pgconn, "TABLE");
-	 qr.loadData(orclconn, pgconn, parallel);
+	 qr.loadData(orclconn, pgconn,pgendpoint, pgdb, pguser, pgpass, parallel);
 	 qr.getDDL(orclconn, "INDEX");
 	 qr.applyDDL(pgconn, "INDEX");
 	}

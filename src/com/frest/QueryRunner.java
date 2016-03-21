@@ -2,6 +2,7 @@ package com.frest;
 
 import java.sql.Array;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -121,7 +122,7 @@ public void applyDDL (Connection conn, String type)
 	
 }
 
-public void loadData (Connection orclconn, Connection pgconn, int parallel) {
+public void loadData (Connection orclconn, Connection pgconn,String pgendpoint,String pgdb,String pguser, String pgpass, int parallel) {
 	try
 	{	System.out.println("Starting loading data");
 		class Tristr 
@@ -183,8 +184,9 @@ public void loadData (Connection orclconn, Connection pgconn, int parallel) {
 		
 		threadcount+=1;	
 		System.out.println("Thread count is : "+threadcount);
-		System.out.println("idx start is "+idxstart + " idx end is "+idxend);
-		Thread t = new Thread(new ThreadedLoader(rows.subList(idxstart, idxend), pgconn, i.st3, i.st1, columncnt, this));
+		//System.out.println("idx start is "+idxstart + " idx end is "+idxend);
+		Connection conn = DriverManager.getConnection("jdbc:postgresql://"+pgendpoint+"/"+pgdb+"?rewriteBatchedStatements=true", pguser, pgpass);
+		Thread t = new Thread(new ThreadedLoader(rows.subList(idxstart, idxend), conn, i.st3, i.st1, columncnt, this,threadcount ));
 		t.start();}
 		
 	try { int Batchcount=100000;

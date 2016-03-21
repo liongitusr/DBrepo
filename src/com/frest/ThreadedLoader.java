@@ -16,7 +16,8 @@ public class ThreadedLoader implements Runnable{
 	Connection conn;
 	String sqlstr;
 	 Runtime runtime = Runtime.getRuntime();
-	 ThreadedLoader(List<ArrayList<Object>> rows ,Connection conn, String sqlstr, String tablename, int columncnt,QueryRunner qr)
+	 int threadnumber;
+	 ThreadedLoader(List<ArrayList<Object>> rows ,Connection conn, String sqlstr, String tablename, int columncnt,QueryRunner qr, int threadnumber)
 	{
 		this.rows=rows;
 		this.conn=conn;
@@ -24,7 +25,7 @@ public class ThreadedLoader implements Runnable{
 		this.tablename=tablename;
 		this.columncnt=columncnt;
 		this.qr=qr;
-		
+		this.threadnumber=threadnumber;
 	}
 	
 public void run ()
@@ -41,7 +42,6 @@ public void run ()
 	}
 
 	ps.addBatch();
-
 	if (++r==Batchcount) 
 	 {int[] rs1 = ps.executeBatch();
 	 System.out.println(r);
@@ -54,11 +54,6 @@ public void run ()
 	int[] rs1 = ps.executeBatch();
 	System.out.println(new Date() + " : Table "+ tablename + " loaded with "+rs1.length + " rows");
 	qr.threadcount-=1;
-	System.out.println("Used Memory:"
-	            + (runtime.totalMemory() - runtime.freeMemory()) / (1024*1024));
-	System.out.println("Total Memory "+runtime.totalMemory()/ (1024*1024));
-	  System.out.println("Free Memory:"
-	            + runtime.freeMemory() / (1024*1024));
 }
 
 catch (SQLException se)
