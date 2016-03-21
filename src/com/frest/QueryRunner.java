@@ -188,7 +188,7 @@ public void loadData (Connection orclconn, Connection pgconn,String pgendpoint,S
 		Connection conn = DriverManager.getConnection("jdbc:postgresql://"+pgendpoint+"/"+pgdb+"?rewriteBatchedStatements=true", pguser, pgpass);
 		Thread t = new Thread(new ThreadedLoader(rows.subList(idxstart, idxend), conn, i.st3, i.st1, columncnt, this,threadcount ));
 		t.start();}
-		
+	 else
 	try { int Batchcount=100000;
 	 int r = 0;
 	 ps = pgconn.prepareStatement(i.st3);
